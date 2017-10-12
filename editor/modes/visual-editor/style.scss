@@ -453,8 +453,7 @@
 		top: #{ -1 * ( $block-spacing / 2 ) };
 	}
 
-	&:hover,
-	&:focus {
+	&.is-visible {
 		opacity: 1;
 	}
 
