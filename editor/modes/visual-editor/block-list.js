@@ -15,6 +15,7 @@ import { serialize, getDefaultBlockName, createBlock } from '@wordpress/blocks';
  * Internal dependencies
  */
 import VisualEditorBlock from './block';
+import VisualEditorSiblingInserter from './sibling-inserter';
 import BlockDropZone from './block-drop-zone';
 import {
 	getBlockUids,
@@ -211,7 +212,8 @@ class VisualEditorBlockList extends Component {
 
 		return (
 			<div>
-				{ !! blocks.length && blocksWithInsertionPoint.map( ( uid ) => {
+				{ !! blocks.length && <VisualEditorSiblingInserter insertIndex={ 0 } /> }
+				{ !! blocks.length && blocksWithInsertionPoint.map( ( uid, index ) => {
 					if ( uid === INSERTION_POINT_PLACEHOLDER ) {
 						return (
 							<div
@@ -221,15 +223,19 @@ class VisualEditorBlockList extends Component {
 						);
 					}
 
-					return (
+					return [
 						<VisualEditorBlock
-							key={ uid }
+							key={ 'block-' + uid }
 							uid={ uid }
 							blockRef={ ( ref ) => this.setBlockRef( ref, uid ) }
 							onSelectionStart={ this.onSelectionStart }
 							onShiftSelection={ this.onShiftSelection }
-						/>
-					);
+						/>,
+						<VisualEditorSiblingInserter
+							key={ 'sibling-inserter-' + uid }
+							insertIndex={ index + 1 }
+						/>,
+					];
 				} ) }
 				{ ! blocks.length &&
 					<div className="editor-visual-editor__placeholder">

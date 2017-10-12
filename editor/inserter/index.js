@@ -36,7 +36,6 @@ class Inserter extends Component {
 			insertIndex,
 			setInsertionPoint,
 			clearInsertionPoint,
-			onToggle,
 		} = this.props;
 
 		// When inserting at specific index, assign as insertion point when
@@ -47,11 +46,6 @@ class Inserter extends Component {
 			} else {
 				clearInsertionPoint();
 			}
-		}
-
-		// Surface toggle callback to parent component
-		if ( onToggle ) {
-			onToggle( isOpen );
 		}
 	}
 
