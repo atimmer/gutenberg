@@ -8,17 +8,31 @@ import { noop } from 'lodash';
 /**
  * WordPress dependencies
  */
-import { findDOMNode, Component } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { Button } from '../';
 
-class ClipboardContainer extends Component {
+function ClipboardButton( { className, children, onCopy, text } ) {
+	const classes = classnames( 'components-clipboard-button', className );
+
+	return (
+		<Button className={ classes }>
+			{ children }
+			<ClipboardButton.Container
+				onCopy={ onCopy }
+				text={ text }
+			/>
+		</Button>
+	);
+}
+
+ClipboardButton.Container = class extends Component {
 	componentDidMount() {
-		const { text, buttonNode, onCopy = noop } = this.props;
-		this.clipboard = new Clipboard( buttonNode, {
+		const { text, onCopy = noop } = this.props;
+		this.clipboard = new Clipboard( this.container.parentNode, {
 			text: () => text,
 			container: this.container,
 		} );
@@ -37,40 +51,6 @@ class ClipboardContainer extends Component {
 	render() {
 		return <div ref={ ref => this.container = ref } />;
 	}
-}
-
-class ClipboardButton extends Component {
-	constructor() {
-		super( ...arguments );
-		this.bindButton = this.bindButton.bind( this );
-	}
-
-	bindButton( ref ) {
-		if ( ref ) {
-			this.button = ref;
-			this.forceUpdate();
-		}
-	}
-	render() {
-		const { className, children, onCopy, text } = this.props;
-		const classes = classnames( 'components-clipboard-button', className );
-
-		return (
-			<Button
-				ref={ this.bindButton }
-				className={ classes }
-			>
-				{ children }
-				{ this.button && (
-					<ClipboardContainer
-						buttonNode={ findDOMNode( this.button ) }
-						onCopy={ onCopy }
-						text={ text }
-					/>
-				) }
-			</Button>
-		);
-	}
-}
+};
 
 export default ClipboardButton;
