@@ -3,7 +3,6 @@
  */
 import Clipboard from 'clipboard';
 import classnames from 'classnames';
-import { noop } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -30,13 +29,31 @@ function ClipboardButton( { className, children, onCopy, text } ) {
 }
 
 ClipboardButton.Container = class extends Component {
+	constructor() {
+		super( ...arguments );
+
+		this.onCopy = this.onCopy.bind( this );
+		this.getText = this.getText.bind( this );
+	}
+
 	componentDidMount() {
-		const { text, onCopy = noop } = this.props;
 		this.clipboard = new Clipboard( this.container.parentNode, {
-			text: () => text,
+			text: this.getText,
 			container: this.container,
 		} );
-		this.clipboard.on( 'success', onCopy );
+
+		this.clipboard.on( 'success', this.onCopy );
+	}
+
+	onCopy() {
+		const { onCopy } = this.props;
+		if ( onCopy ) {
+			onCopy();
+		}
+	}
+
+	getText() {
+		return this.props.text;
 	}
 
 	componentWillUnmount() {
