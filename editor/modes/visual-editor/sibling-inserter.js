@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 /**
@@ -13,6 +14,10 @@ import { focus } from '@wordpress/utils';
  * Internal dependencies
  */
 import Inserter from '../../inserter';
+import {
+	getBlockInsertionPoint,
+	isBlockInsertionPointVisible,
+} from '../../selectors';
 
 class VisualEditorSiblingInserter extends Component {
 	constructor() {
@@ -82,11 +87,11 @@ class VisualEditorSiblingInserter extends Component {
 	}
 
 	render() {
-		const { insertIndex } = this.props;
+		const { insertIndex, showInsertionPoint } = this.props;
 		const { isVisible } = this.state;
 
 		const classes = classnames( 'editor-visual-editor__sibling-inserter', {
-			'is-visible': isVisible,
+			'is-visible': isVisible || showInsertionPoint,
 		} );
 
 		return (
@@ -99,6 +104,9 @@ class VisualEditorSiblingInserter extends Component {
 				onMouseEnter={ this.show }
 				onMouseLeave={ this.hide }
 				tabIndex={ 0 }>
+				{ showInsertionPoint && (
+					<div className="editor-visual-editor__insertion-point" />
+				) }
 				{ isVisible && [
 					<hr
 						key="rule"
@@ -116,4 +124,13 @@ class VisualEditorSiblingInserter extends Component {
 	}
 }
 
-export default VisualEditorSiblingInserter;
+export default connect(
+	( state, ownProps ) => {
+		return {
+			showInsertionPoint: (
+				isBlockInsertionPointVisible( state ) &&
+				getBlockInsertionPoint( state ) === ownProps.insertIndex
+			),
+		};
+	}
+)( VisualEditorSiblingInserter );
