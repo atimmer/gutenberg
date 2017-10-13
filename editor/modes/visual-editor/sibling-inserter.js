@@ -106,6 +106,7 @@ class VisualEditorSiblingInserter extends Component {
 					/>,
 					<Inserter
 						key="inserter"
+						position="bottom"
 						insertIndex={ insertIndex }
 						onToggle={ this.suspendToggleVisible }
 					/>,
