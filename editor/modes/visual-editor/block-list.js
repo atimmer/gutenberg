@@ -197,7 +197,7 @@ class VisualEditorBlockList extends Component {
 		return (
 			<div>
 				{ !! blocks.length && <VisualEditorSiblingInserter insertIndex={ 0 } /> }
-				{ blocks.map( ( uid, index ) => [
+				{ blocks.reduce( ( result, uid, index ) => result.concat(
 					<VisualEditorBlock
 						key={ 'block-' + uid }
 						uid={ uid }
@@ -209,7 +209,7 @@ class VisualEditorBlockList extends Component {
 						key={ 'sibling-inserter-' + uid }
 						insertIndex={ index + 1 }
 					/>,
-				] ) }
+				), [] ) }
 				{ ! blocks.length &&
 					<div className="editor-visual-editor__placeholder">
 						<BlockDropZone />
