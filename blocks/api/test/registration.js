@@ -72,7 +72,14 @@ describe( 'blocks', () => {
 		it( 'should accept valid block names', () => {
 			const block = registerBlockType( 'my-plugin/fancy-block-4', defaultBlockSettings );
 			expect( console.error ).not.toHaveBeenCalled();
-			expect( block ).toEqual( { name: 'my-plugin/fancy-block-4', icon: 'star-filled', save: noop, category: 'common', title: 'block title' } );
+			expect( block ).toEqual( {
+				name: 'my-plugin/fancy-block-4',
+				icon: 'star-filled',
+				save: noop,
+				category: 'common',
+				title: 'block title',
+				attributes: {},
+			} );
 		} );
 
 		it( 'should prohibit registering the same block twice', () => {
@@ -152,7 +159,10 @@ describe( 'blocks', () => {
 				category: 'common',
 				title: 'block title',
 				icon: 'star-filled',
-				attributes,
+				attributes: { ok: {
+					source: 'comment',
+					type: 'boolean',
+				} },
 			} );
 		} );
 
@@ -167,6 +177,7 @@ describe( 'blocks', () => {
 				category: 'common',
 				title: 'block title',
 				icon: 'star-filled',
+				attributes: {},
 			} );
 		} );
 	} );
@@ -180,9 +191,14 @@ describe( 'blocks', () => {
 
 		it( 'should unregister existing blocks', () => {
 			registerBlockType( 'core/test-block', defaultBlockSettings );
-			expect( getBlockTypes() ).toEqual( [
-				{ name: 'core/test-block', save: noop, category: 'common', title: 'block title', icon: 'star-filled' },
-			] );
+			expect( getBlockTypes() ).toEqual( [ {
+				name: 'core/test-block',
+				save: noop,
+				category: 'common',
+				title: 'block title',
+				icon: 'star-filled',
+				attributes: {},
+			} ] );
 			const oldBlock = unregisterBlockType( 'core/test-block' );
 			expect( console.error ).not.toHaveBeenCalled();
 			expect( oldBlock ).toEqual( {
@@ -191,6 +207,7 @@ describe( 'blocks', () => {
 				category: 'common',
 				title: 'block title',
 				icon: 'star-filled',
+				attributes: {},
 			} );
 			expect( getBlockTypes() ).toEqual( [] );
 		} );
@@ -233,6 +250,7 @@ describe( 'blocks', () => {
 				category: 'common',
 				title: 'block title',
 				icon: 'star-filled',
+				attributes: {},
 			} );
 		} );
 
@@ -246,6 +264,7 @@ describe( 'blocks', () => {
 				category: 'common',
 				title: 'block title',
 				icon: 'star-filled',
+				attributes: {},
 			} );
 		} );
 	} );
@@ -260,7 +279,14 @@ describe( 'blocks', () => {
 			const blockType = { settingName: 'settingValue', save: noop, category: 'common', title: 'block title' };
 			registerBlockType( 'core/test-block-with-settings', blockType );
 			expect( getBlockTypes() ).toEqual( [
-				{ name: 'core/test-block', save: noop, category: 'common', title: 'block title', icon: 'star-filled' },
+				{
+					name: 'core/test-block',
+					save: noop,
+					category: 'common',
+					title: 'block title',
+					icon: 'star-filled',
+					attributes: {},
+				},
 				{
 					name: 'core/test-block-with-settings',
 					settingName: 'settingValue',
@@ -268,6 +294,7 @@ describe( 'blocks', () => {
 					category: 'common',
 					title: 'block title',
 					icon: 'star-filled',
+					attributes: {},
 				},
 			] );
 		} );
