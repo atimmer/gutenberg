@@ -103,7 +103,7 @@ class VisualEditorSiblingInserter extends Component {
 				onBlur={ this.hide }
 				onMouseEnter={ this.show }
 				onMouseLeave={ this.hide }
-				tabIndex={ 0 }>
+				tabIndex={ isVisible ? -1 : 0 }>
 				{ showInsertionPoint && (
 					<div className="editor-visual-editor__insertion-point" />
 				) }
