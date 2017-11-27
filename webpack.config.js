@@ -47,6 +47,7 @@ const entryPointNames = [
 	'blocks',
 	'components',
 	'date',
+	'data',
 	'editor',
 	'element',
 	'i18n',
